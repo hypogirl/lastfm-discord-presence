@@ -1,6 +1,9 @@
 # lastfm-discord-presence
 Python script to show the last.fm song you're currently playing on your discord rich presence.
 
+![song with album title](https://i.imgur.com/Wm4k3YO.png "song with album title") ![song with genres](https://i.imgur.com/7TA58Es.png "song with genres")
+![song paused](https://i.imgur.com/jmsnOLm.png "song paused")
+
 ## Requirements:
 ### pylast
 ```
