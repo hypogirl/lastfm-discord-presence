@@ -98,7 +98,7 @@ def playing(t):
             
         if current_track != t:
             try:
-                RPC.update(state= "by " + str(current_track.artist)[:125] + "  ", details= str(current_track.title)[:125] + "  ", small_image= "small", large_text= album.title[:125] + "   ", small_text= genre, large_image= "large", start= time.mktime(time.localtime()))
+                RPC.update(state= "by " + str(current_track.artist)[:125] + "  ", details= str(current_track.title)[:125] + "  ", small_image= "small", large_text= "Album: "  + album.title[:121], small_text= genre, large_image= "large", start= time.mktime(time.localtime()))
             except:
                 print ("Discord error")
                 return d, current_track
