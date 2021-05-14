@@ -7,7 +7,7 @@ network = pylast.LastFMNetwork(api_key=var.key, api_secret=var.secret)
 user = network.get_user(var.username)
 RPC = Presence("748506372215275640")
 RPC.connect()
-t = 0
+t = False
 
 def getInfo(track):
     artist = network.get_artist(track.artist)
@@ -88,8 +88,9 @@ def playing(t):
 
         try:
             album = current_track.get_album()
+            album_title = "Album: "  + album.title
         except:
-            album = "Unkown album"
+            album_title = "Unknown album"
 
         d = d / 1000
         track = str(current_track)
@@ -98,7 +99,7 @@ def playing(t):
             
         if current_track != t:
             try:
-                RPC.update(state= "by " + str(current_track.artist)[:125] + "  ", details= str(current_track.title)[:125] + "  ", small_image= "small", large_text= "Album: "  + album.title[:121], small_text= genre, large_image= "large", start= time.mktime(time.localtime()))
+                RPC.update(state= "by " + str(current_track.artist)[:125] + "  ", details= str(current_track.title)[:125] + "  ", small_image= "small", large_text= album_title[:121], small_text= genre, large_image= "large", start= time.mktime(time.localtime()))
             except:
                 print ("Discord error")
                 return d, current_track
