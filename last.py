@@ -23,6 +23,7 @@ def get_info(track):
 
     if "acoustic" in track.title.lower():
         genren = "acoustic"
+        print("Genres: acoustic")
 
     else:
         try:    
@@ -95,8 +96,9 @@ def playing(t):
     if current_track:
         try:
             d = current_track.get_duration()
+            d = int(d / 1000)
         except:
-            d = 60000
+            d = 60
 
         try:
             album = current_track.get_album()
@@ -104,7 +106,6 @@ def playing(t):
         except:
             album_title = "Unknown album"
 
-        d = d / 1000
         track = str(current_track)
         print ("Currently playing:", track)
         genre = get_info(current_track)
@@ -130,8 +131,14 @@ def playing(t):
             last_tracks = False
             return 5,False
         
-        if last_tracks:
-            last_track = last_tracks[0].track
+        last_track = last_tracks[0].track
+        try:
+            d = current_track.get_duration()
+            d = int(d / 1000)
+        except:
+            d = 60
+
+        
 
         if last_track != t:
             print ("No track currently playing.\nLast played track:",last_track)
@@ -147,9 +154,10 @@ def playing(t):
                 print("Discord error")
         return d,t
 
-    print("\nTrack length:",d)
+    print("Track length:",d,"seconds")
     return d,t
 
 while True:
+    print("\n")
     d,t = playing(t)
     time.sleep(d)
