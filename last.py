@@ -31,8 +31,8 @@ def get_info(track):
             return "unknown genre"
 
         if len(genre)>1:
-            genren1 = ""
-            genren2 = ""
+            genren1 = genren2 = str()
+            last1 = last2 = 0
             flag = True
             i = 0
             i2 = 0
@@ -42,7 +42,11 @@ def get_info(track):
                 for term in genre_blacklist:
                     if term in genren1:
                         blacklist_flag = True
-                print(blacklist_flag)
+                if last1 == genren1 and last2 == genren2:
+                    genren2 = None
+                    break
+                last1 = genren1
+                last2 = genren2
                 while genren1 in genren2 or blacklist_flag or genren1 in genre_blacklist:
                     genren1 = genre[i]
                     if genre[-1] == genre[i]:
@@ -78,7 +82,10 @@ def get_info(track):
                     flag = True
                     flag2 = False
 
-            genren = genren1 + ", " + genren2
+            if genren2:
+                genren = genren1 + ", " + genren2
+            else:
+                genren = genren1
         elif genre:
             genren = genre[0].item.get_name().lower()
         else:
@@ -92,7 +99,7 @@ def playing(t):
     try:
         current_track = user.get_now_playing()
     except:
-        print ("Error getting info from last.fm")
+        print("Error getting info from last.fm")
         return 5,t
 
     if current_track:
@@ -109,14 +116,16 @@ def playing(t):
             album_title = "Unknown album"
 
         track = str(current_track)
-        print ("Currently playing:", track)
+        print("Currently playing:", track)
+        if album_title != "Unknown album":
+            print("Album:", album_title)
         genre = get_info(current_track)
             
         if current_track != t:
             try:
                 RPC.update(state= "by " + str(current_track.artist)[:125] + "  ", details= str(current_track.title)[:125] + "  ", small_image= "small", large_text= album_title[:121], small_text= genre, large_image= "large", start= time.mktime(time.localtime()))
             except:
-                print ("Discord error")
+                print("Discord error")
                 t = False
                 return d, current_track
             t = current_track
@@ -130,7 +139,7 @@ def playing(t):
         try:
             last_tracks = user.get_recent_tracks(limit=1, cacheable=False)
         except:
-            print ("Error getting info about the most recently played track.")
+            print("Error getting info about the most recently played track.")
             last_tracks = False
             return 5,False
         
@@ -142,14 +151,14 @@ def playing(t):
             d = 60
 
         if t and last_track != t:
-            print ("No track currently playing.\nLast played track:",last_track)
+            print("No track currently playing.\nLast played track:",last_track)
             try:
                 RPC.update(state= "by " + str(last_track.artist)[:125] + "  ", details= str(last_track.title)[:125] + "  ", large_image= "pause", large_text= "Paused")
                 t = False
             except:
                 print("Discord error.")
         elif t:
-            print ("No track currently playing.\nLast played track:",t)
+            print("No track currently playing.\nLast played track:",t)
             try:
                 RPC.update(state= "by " + str(t.artist)[:125] + "  ", details= str(t.title)[:125] + "  ", large_image= "pause", large_text= "Paused")
                 t = False
