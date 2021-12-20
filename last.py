@@ -118,7 +118,7 @@ def playing(t):
         track = str(current_track)
         print("Currently playing:", track)
         if album_title != "Unknown album":
-            print("Album:", album_title)
+            print(album_title)
         genre = get_info(current_track)
             
         if current_track != t:
@@ -175,4 +175,8 @@ while True:
     try:
         time.sleep(d)
     except KeyboardInterrupt:
-        continue
+        ki = input("Update currently playing song or quit? (u/q) ")
+        if ki.lower() == "u":
+            continue
+        elif ki.lower() == "q":
+            quit()
