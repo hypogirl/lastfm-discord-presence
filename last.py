@@ -175,8 +175,11 @@ while True:
     try:
         time.sleep(d)
     except KeyboardInterrupt:
-        ki = input("Update currently playing song or quit? (u/q) ")
+        ki = input("Update currently playing song, quit? Or did you open a new discord client? (u/q/d) ")
         if ki.lower() == "u":
             continue
         elif ki.lower() == "q":
             quit()
+        elif ki.lower() == "d":
+            RPC = Presence("748506372215275640")
+            RPC.connect()
